@@ -5,16 +5,16 @@ const connectDB = async (): Promise<void> => {
     const mongoUri = process.env.MONGODB_URI;
 
     if (!mongoUri) {
-      throw new Error(
-        "MONGODB_URI n'est pas défini dans les variables d'environnement"
-      );
+      throw new Error("❌ Variable MONGODB_URI manquante.");
     }
 
-    const conn = await mongoose.connect(mongoUri);
+    const conn = await mongoose.connect(mongoUri, {
+      serverSelectionTimeoutMS: 5000, // évite que ça se bloque trop longtemps
+    });
 
-    console.log(`MongoDB connecté: ${conn.connection.host}`);
+    console.log(`✅ MongoDB connecté à : ${conn.connection.host}`);
   } catch (error) {
-    console.error("Erreur de connexion à MongoDB:", error);
+    console.error("🚨 Erreur MongoDB :", error);
     process.exit(1);
   }
 };
