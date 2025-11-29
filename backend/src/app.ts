@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import todoRoute from "./routes/todo.routes";
+import authRoute from "./routes/user.routes";
 
 const app: Application = express();
 
@@ -11,6 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use("/api/todo", todoRoute);
+app.use("/api/auth", authRoute);
 
 //test
 app.get("/test", (req: Request, res: Response) => {

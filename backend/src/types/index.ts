@@ -7,3 +7,9 @@ export interface TodoBody {
   timeRelease: number;
   dueDate?: Date;
 }
+
+export interface UserBody {
+  username: string;
+  email: string;
+  password: string;
+}

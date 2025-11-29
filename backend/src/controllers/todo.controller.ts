@@ -71,6 +71,6 @@ export const updateOneTodo = async (
     }
     res.status(200).json(updateTodo);
   } catch (error) {
-    res.status(404).json({ message: "invalid id: ", error });
+    res.status(400).json({ message: "invalid id: ", error });
   }
 };
