@@ -12,6 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use("/api/todo", todoRoute);
 
+//test
 app.get("/test", (req: Request, res: Response) => {
   res.status(200).json({ message: "reda" });
 });

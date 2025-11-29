@@ -27,3 +27,50 @@ export const createTodo = async (
     res.status(500).json({ message: "error" });
   }
 };
+
+export const getOneTodo = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const oneTodo = await Todo.findById(id);
+    if (!oneTodo) {
+      res.status(404).json({ message: "todo not found" });
+    }
+    res.status(200).json(oneTodo);
+  } catch (error) {
+    res.status(400).json({ message: "invalid id: ", error });
+  }
+};
+export const deleteOneTodo = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const deleteTodo = await Todo.deleteOne({ _id: id });
+    if (!deleteTodo) {
+      res.status(404).json({ message: "todo not found" });
+    }
+    res.status(200).json(deleteTodo);
+  } catch (error) {
+    res.status(400).json({ message: "invalid id: ", error });
+  }
+};
+export const updateOneTodo = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const id = req.params.id;
+     const data = req.body;
+    const updateTodo = await Todo.updateOne({ _id: id }, { $set: data });
+    if (!updateTodo) {
+      res.status(404).json({ message: "todo not found" });
+    }
+    res.status(200).json(updateTodo);
+  } catch (error) {
+    res.status(404).json({ message: "invalid id: ", error });
+  }
+};
