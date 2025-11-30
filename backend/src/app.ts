@@ -3,6 +3,7 @@ import cors from "cors";
 import todoRoute from "./routes/todo.routes";
 import authRoute from "./routes/user.routes";
 
+
 const app: Application = express();
 
 // Middlewares

@@ -1,6 +1,6 @@
 import Todo from "../models/Todo";
 import { Request, Response } from "express";
-import { TodoBody } from "../types/index";
+import { TodoBody } from "../types";
 
 export const getAllTodo = async (
   req: Request,
@@ -64,7 +64,7 @@ export const updateOneTodo = async (
 ): Promise<void> => {
   try {
     const id = req.params.id;
-     const data = req.body;
+    const data = req.body;
     const updateTodo = await Todo.updateOne({ _id: id }, { $set: data });
     if (!updateTodo) {
       res.status(404).json({ message: "todo not found" });
