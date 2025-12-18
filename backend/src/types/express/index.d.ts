@@ -9,4 +9,4 @@ declare global {
   }
 }
 
-export {}; // 👈 OBLIGATOIRE POUR ÉVITER QLQ BUGS TS
+export {}; 

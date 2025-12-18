@@ -10,7 +10,7 @@ export const signup = async (
 ): Promise<void> => {
   try {
     const { username, email, password } = req.body;
-    if (!username || !email || !password) {
+    if (!email || !password) {
       res.status(400).json({ message: "Email et mot de passe requis" });
     }
     const hash = await bcrypt.hash(password, 10);
@@ -19,7 +19,18 @@ export const signup = async (
       email,
       password: hash,
     });
-    res.status(201).json({ messge: "utilisateur crée", user });
+    const token = jwt.sign(
+      { id: user._id, email: user.email, username: user.username },
+      process.env.JWT_SECRET!,
+      { expiresIn: "24h" }
+    );
+    res.cookie("token", token, {
+      httpOnly: false, // ou true si tu veux sécuriser
+      secure: false,
+      sameSite: "lax",
+      maxAge: 1000 * 60 * 60 * 24,
+    });
+    res.status(201).json({ messge: "utilisateur crée", user, token });
   } catch (error) {
     res.status(500).json({ message: "erreur de serveur" });
   }

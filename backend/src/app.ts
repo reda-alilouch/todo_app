@@ -3,11 +3,15 @@ import cors from "cors";
 import todoRoute from "./routes/todo.routes";
 import authRoute from "./routes/user.routes";
 
-
 const app: Application = express();
 
 // Middlewares
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
