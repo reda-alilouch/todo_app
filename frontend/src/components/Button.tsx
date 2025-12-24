@@ -11,8 +11,8 @@ export default function Button({
 }: ButtonProps) {
   return (
     <button
-      className={`p-2 text-black rounded-sm w-min focus:border ${className}`}
-      {...rest}  // <-- ici tu passes toutes les autres propriétés
+      className={`p-2 text-black rounded-sm focus:border ${className}`}
+      {...rest}  
     >
       {children}
     </button>

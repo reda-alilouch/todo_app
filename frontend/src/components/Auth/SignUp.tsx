@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import Button from "../Button";
+import { signup } from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
 
-interface SignupData {
-  username: String;
-  email: String;
-  password: String;
-}
 export default function SignUp() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [error, steError] = useState("");
   const [formSignUp, setFromSignUp] = useState({
     username: "",
     email: "",
@@ -18,32 +18,11 @@ export default function SignUp() {
       [e.target.name]: e.target.value,
     });
   };
-  const signup = async (data: SignupData) => {
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}auth/signup`,
-        {
-          credentials: "include",
-          method: "POST",
-          headers: {
-            "content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
-      const result = await response.json();
-      console.log(result);
-      if (result.success) {
-        return { success: true, message: result.message };
-      } else {
-        return { success: false, message: result.message };
-      }
-    } catch (error) {
-      return { success: false, message: "erreur de serveur" };
-    }
-  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    steError("");
     try {
       const validateResult = await signup({
         username: formSignUp.username,
@@ -56,14 +35,20 @@ export default function SignUp() {
           email: "",
           password: "",
         });
+        router.push("/Home");
       } else {
+        steError(validateResult.message);
       }
-    } catch (error) {}
+    } catch (error) {
+      steError("erreur serveur, veuillez réessayer");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="flex flex-col gap-3">
-      <form method="post" onSubmit={handleSubmit}>
+    <form method="post" onSubmit={handleSubmit}>
+      <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-3">
           <input
             className="p-2 text-black border rounded-sm"
@@ -90,10 +75,13 @@ export default function SignUp() {
             onChange={handleChange}
           />
         </div>
-        <Button className="px-2 text-black border rounded-sm" type="submit">
+        <Button
+          className="w-full px-2 text-black border rounded-sm"
+          type="submit"
+        >
           Inscription
         </Button>
-      </form>
-    </div>
+      </div>
+    </form>
   );
 }

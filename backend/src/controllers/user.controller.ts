@@ -1,7 +1,7 @@
 import User, { IUser } from "../models/User";
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { UserBody } from "../types";
 
 export const signup = async (
@@ -36,25 +36,86 @@ export const signup = async (
   }
 };
 
-export const singin = async (req: Request, res: Response): Promise<void> => {
-  const { username, email, password } = req.body;
+export const signin = async (req: Request, res: Response): Promise<void> => {
   try {
-    const user: IUser | null = await User.findOne({ email });
-    if (!user) {
-      res.status(401).json({ message: "email not found" });
+    const { identifier, password } = req.body;
+
+    if (!identifier || !password) {
+      res.status(400).json({ message: "Identifiant et mot de passe requis" });
       return;
     }
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      res.status(401).json({ message: "mot de passe incorrect" });
+
+    let user: IUser | null = null;
+
+    if (identifier.includes("@")) {
+      user = await User.findOne({ email: identifier });
+    } else {
+      user = await User.findOne({ username: identifier });
     }
-    const token = jwt.sign(
-      { id: user._id, email: user.email, username: user.username },
-      process.env.JWT_SECRET!,
-      { expiresIn: "24h" }
-    );
-    res.status(200).json({ message: "connexion réussie", token });
+
+    if (!user) {
+      res.status(404).json({ message: "Utilisateur introuvable" });
+      return;
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      res.status(401).json({ message: "Mot de passe incorrect" });
+      return;
+    }
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET as string, {
+      expiresIn: "1d",
+    });
+    res.cookie("token", token, {
+      httpOnly: false, // ou true si tu veux sécuriser
+      secure: false,
+      sameSite: "lax",
+      maxAge: 1000 * 60 * 60 * 24,
+    });
+    res.status(200).json({
+      message: "Connexion réussie",
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+      },
+      token,
+    });
   } catch (error) {
-    res.status(500).json({ message: "erreur serveur", error });
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+};
+
+export const userValidate = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const token = req.cookies.token;
+    if (!token) {
+      res.status(401).json({ connected: false });
+      return;
+    }
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET as string
+    ) as JwtPayload;
+    const user = await User.findById(decoded.id).select("-password");
+    if (!user) {
+      res.status(401).json({ connected: false });
+      return;
+    }
+    res.status(200).json({
+      connected: false,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        password: user.password,
+      },
+    });
+  } catch (error) {
+    res.status(401).json({ connected: false });
   }
 };
