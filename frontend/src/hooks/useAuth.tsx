@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { getCurrentUser } from "@/lib/auth";
 import { SigninData, SignupData, AuthContextType } from "@/types";
 import {
@@ -9,15 +9,18 @@ import {
   useState,
 } from "react";
 import axios from "axios";
+
 const AuthContext = createContext<AuthContextType | null>(null);
+
 export default function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function checkAuth() {
       try {
         const data = await getCurrentUser();
+        console.log(data)
         setUser(data);
       } catch {
         setUser(null);
@@ -25,14 +28,15 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
         setLoading(false);
       }
     }
-    checkAuth;
+    checkAuth();
   }, []);
   return (
-    <AuthContext.Provider value={{ user, loading }}>
+    <AuthContext.Provider value={{ user, setUser, loading }}>
       {children}
     </AuthContext.Provider>
   );
 }
+
 export const signin = async (data: SigninData) => {
   try {
     const res = await axios.post(
@@ -91,7 +95,6 @@ export function useAuth() {
 }
 
 /*
-
 vérifier si l'utilisateur est connecté
 
 gérer le loading / logout
@@ -100,4 +103,5 @@ protéger les pages côté client
 
 rafraîchir le token
 
-afficher le nom du user dans la navbar, etc.*/
+afficher le nom du user dans la navbar, etc.
+*/

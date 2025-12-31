@@ -11,7 +11,7 @@ export default function Button({
 }: ButtonProps) {
   return (
     <button
-      className={`p-2 text-black rounded-sm focus:border ${className}`}
+      className={` text-black ${className}`}
       {...rest}  
     >
       {children}

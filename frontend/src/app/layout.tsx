@@ -1,3 +1,4 @@
+"use client";
 import AuthProvider from "@/hooks/useAuth";
 import "./globals.css";
 
@@ -6,6 +7,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <body className="bg-white">

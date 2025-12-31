@@ -107,7 +107,7 @@ export const userValidate = async (
       return;
     }
     res.status(200).json({
-      connected: false,
+      connected: true,
       user: {
         id: user._id,
         username: user.username,

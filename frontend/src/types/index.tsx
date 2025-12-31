@@ -14,6 +14,7 @@ export interface user {
   password: string;
 }
 export type AuthContextType = {
-  user: any;
-  loading:boolean;
+  user: string | null;
+  setUser: (user: string | null) => void;
+  loading: boolean;
 };
