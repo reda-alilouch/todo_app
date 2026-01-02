@@ -1,41 +1,6 @@
 "use client";
-import { getCurrentUser } from "@/lib/auth";
-import { SigninData, SignupData, AuthContextType } from "@/types";
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { SigninData, SignupData } from "@/types";
 import axios from "axios";
-
-const AuthContext = createContext<AuthContextType | null>(null);
-
-export default function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function checkAuth() {
-      try {
-        const data = await getCurrentUser();
-        console.log(data)
-        setUser(data);
-      } catch {
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    }
-    checkAuth();
-  }, []);
-  return (
-    <AuthContext.Provider value={{ user, setUser, loading }}>
-      {children}
-    </AuthContext.Provider>
-  );
-}
 
 export const signin = async (data: SigninData) => {
   try {
@@ -85,14 +50,6 @@ export const signup = async (data: SignupData) => {
     };
   }
 };
-
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used inside AuthProvide");
-  }
-  return context;
-}
 
 /*
 vérifier si l'utilisateur est connecté

@@ -35,7 +35,7 @@ export default function SignUp() {
           email: "",
           password: "",
         });
-        router.push("/MyTodo");
+        router.push("/Home");
       } else {
         steError(validateResult.message);
       }

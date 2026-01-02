@@ -32,7 +32,7 @@ export default function SignIn() {
           identifier: "",
           password: "",
         });
-        router.push("/MyTodo");
+        router.push("/Home");
       } else {
         setError(validateForm.message);
       }

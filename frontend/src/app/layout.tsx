@@ -1,17 +1,21 @@
 "use client";
-import AuthProvider from "@/hooks/useAuth";
+import Header from "@/features/Header";
 import "./globals.css";
+import { usePathname } from "next/navigation";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
+  const routes = ["/Home", "/Profile"];
+  const pathname = usePathname();
+  const router = routes.some((route) => pathname.startsWith(route));
   return (
     <html lang="en">
       <body className="bg-white">
-        <AuthProvider>{children}</AuthProvider>
+        {router ? <Header /> : <></>}
+        <main>{children}</main>
       </body>
     </html>
   );

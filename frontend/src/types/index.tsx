@@ -13,8 +13,3 @@ export interface user {
   email: string;
   password: string;
 }
-export type AuthContextType = {
-  user: string | null;
-  setUser: (user: string | null) => void;
-  loading: boolean;
-};
