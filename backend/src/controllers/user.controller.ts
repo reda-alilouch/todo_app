@@ -25,7 +25,7 @@ export const signup = async (
       { expiresIn: "24h" }
     );
     res.cookie("token", token, {
-      httpOnly: false, // ou true si tu veux sécuriser
+      httpOnly: true,
       secure: false,
       sameSite: "lax",
       maxAge: 1000 * 60 * 60 * 24,
@@ -68,7 +68,7 @@ export const signin = async (req: Request, res: Response): Promise<void> => {
       expiresIn: "1d",
     });
     res.cookie("token", token, {
-      httpOnly: false, // ou true si tu veux sécuriser
+      httpOnly: true,
       secure: false,
       sameSite: "lax",
       maxAge: 1000 * 60 * 60 * 24,

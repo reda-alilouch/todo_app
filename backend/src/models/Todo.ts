@@ -8,6 +8,7 @@ export interface ITodo extends Document {
   priority?: "low" | "medium" | "high";
   timeRelease: number;
   dueDate?: Date;
+  userId?: string;
 }
 
 const todoSchema: Schema = new Schema(
@@ -23,6 +24,11 @@ const todoSchema: Schema = new Schema(
     },
     timeRelease: { type: Number, required: true },
     dueDate: { type: Date },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   { timestamps: true }
 );

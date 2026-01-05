@@ -6,6 +6,7 @@ export interface TodoBody {
   priority?: "low" | "medium" | "high";
   timeRelease: number;
   dueDate?: Date;
+  userId?: string;
 }
 
 export interface UserBody {

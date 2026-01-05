@@ -13,3 +13,12 @@ export interface user {
   email: string;
   password: string;
 }
+
+export interface todo {
+  name: string;
+  slug: string;
+  description: string;
+  completed: boolean;
+  priority: string;
+  timeRelease: number | "";
+}

@@ -1,12 +1,11 @@
-import { JwtPayload } from "jsonwebtoken";
-import { User } from "../../models/User";
+import { Document } from "mongoose";
 
 declare global {
   namespace Express {
     interface Request {
-      user?: string | JwtPayload;
+      user?: any;
     }
   }
 }
 
-export {}; 
+export {};

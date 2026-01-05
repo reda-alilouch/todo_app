@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 export default function SignUp() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [error, steError] = useState("");
+  const [error, setError] = useState("");
   const [formSignUp, setFromSignUp] = useState({
     username: "",
     email: "",
@@ -22,7 +22,7 @@ export default function SignUp() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    steError("");
+    setError("");
     try {
       const validateResult = await signup({
         username: formSignUp.username,
@@ -37,10 +37,10 @@ export default function SignUp() {
         });
         router.push("/Home");
       } else {
-        steError(validateResult.message);
+        setError(validateResult.message);
       }
     } catch (error) {
-      steError("erreur serveur, veuillez réessayer");
+      setError("erreur serveur, veuillez réessayer");
     } finally {
       setLoading(false);
     }

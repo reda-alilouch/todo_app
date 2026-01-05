@@ -2,6 +2,7 @@
 import Header from "@/features/Header";
 import "./globals.css";
 import { usePathname } from "next/navigation";
+import { ModalProvider } from "@/provider/ModalContext";
 
 export default function RootLayout({
   children,
@@ -14,8 +15,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-white">
-        {router ? <Header /> : <></>}
-        <main>{children}</main>
+        <ModalProvider>
+          {router ? <Header /> : <></>}
+          <main>{children}</main>
+        </ModalProvider>
       </body>
     </html>
   );
