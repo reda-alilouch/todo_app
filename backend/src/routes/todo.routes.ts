@@ -5,6 +5,7 @@ import {
   getOneTodo,
   deleteOneTodo,
   updateOneTodo,
+  completedTodo,
 } from "../controllers/todo.controller";
 import { authMiddleware } from "../middleware/auth.middleware";
 const router = Router();
@@ -14,5 +15,6 @@ router.post("/", authMiddleware, createTodo);
 router.get("/:id", authMiddleware, getOneTodo);
 router.delete("/:id", authMiddleware, deleteOneTodo);
 router.put("/:id", authMiddleware, updateOneTodo);
+router.patch("/:id", authMiddleware, completedTodo);
 
 export default router;

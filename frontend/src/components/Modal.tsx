@@ -8,7 +8,6 @@ import { todo } from "@/types";
 export default function Modal() {
   const [formTodo, setFormTodo] = useState<todo>({
     name: "",
-    slug: "",
     description: "",
     completed: false,
     priority: "",
@@ -35,7 +34,6 @@ export default function Modal() {
         name: formTodo.name,
         description: formTodo.description,
         timeRelease: formTodo.timeRelease,
-        slug: formTodo.slug,
         completed: formTodo.completed,
         priority: formTodo.priority,
       });
@@ -43,7 +41,6 @@ export default function Modal() {
         setFormTodo({
           name: "",
           description: "",
-          slug: "",
           completed: false,
           priority: "",
           timeRelease: "",
@@ -94,8 +91,9 @@ export default function Modal() {
               <select
                 name="priority"
                 value={formTodo.priority}
-                aria-label="Medium"
-                defaultValue="medium"
+                onChange={(e) =>
+                  setFormTodo({ ...formTodo, priority: e.target.value })
+                }
                 className="p-2 text-black border rounded-sm"
               >
                 <option value="low">Low</option>

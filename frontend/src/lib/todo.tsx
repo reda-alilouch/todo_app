@@ -1,9 +1,19 @@
-import { todo } from "@/types";
+import { Todo } from "@/types/todo";
 import axios from "axios";
 
-export const getAllTodo = async (): Promise<todo[]> => {
+export const getAllTodo = async (): Promise<Todo[]> => {
   const response = await axios.get(
     `${process.env.NEXT_PUBLIC_BACKEND_API_URL}todo`,
+    {
+      withCredentials: true,
+    }
+  );
+
+  return response.data;
+};
+export const getOneTodo = async (): Promise<Todo[]> => {
+  const response = await axios.get(
+    `${process.env.NEXT_PUBLIC_BACKEND_API_URL}todo/id`,
     {
       withCredentials: true,
     }

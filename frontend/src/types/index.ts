@@ -14,11 +14,6 @@ export interface user {
   password: string;
 }
 
-export interface todo {
-  name: string;
-  slug: string;
-  description: string;
+export type UpdateTodoCompleted = {
   completed: boolean;
-  priority: string;
-  timeRelease: number | "";
-}
+};
