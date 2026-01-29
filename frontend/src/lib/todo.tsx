@@ -11,12 +11,3 @@ export const getAllTodo = async (): Promise<Todo[]> => {
 
   return response.data;
 };
-export const getOneTodo = async (): Promise<Todo[]> => {
-  const response = await axios.get(
-    `${process.env.NEXT_PUBLIC_BACKEND_API_URL}todo/id`,
-    {
-      withCredentials: true,
-    }
-  );
-  return response.data;
-};

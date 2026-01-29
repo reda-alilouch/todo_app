@@ -8,10 +8,11 @@ export interface SignupData {
   email: string;
   password: string;
 }
-export interface user {
+export interface User {
   username: string;
   email: string;
   password: string;
+  image: string;
 }
 
 export type UpdateTodoCompleted = {

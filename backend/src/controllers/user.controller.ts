@@ -86,3 +86,18 @@ export const signin = async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
+
+export const profile = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const UserInformation = await User.find({ _id: req.params.id });
+
+    if (!UserInformation) {
+      res.status(404).json({ message: "user not found" });
+      return;
+    }
+
+    res.status(200).json(UserInformation);
+  } catch (error) {
+    res.status(400).json({ message: "invalid id", error });
+  }
+};

@@ -1,12 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "./Button";
 import { X } from "lucide-react";
 import { useModal } from "@/provider/ModalContext";
 import { createTodo } from "@/hooks/useTodo";
-import { todo } from "@/types";
-export default function Modal() {
-  const [formTodo, setFormTodo] = useState<todo>({
+import { Todo } from "@/types/todo";
+export default function CreateModal() {
+  const [formTodo, setFormTodo] = useState<Todo>({
     name: "",
     description: "",
     completed: false,
@@ -15,7 +15,7 @@ export default function Modal() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const { setOpenModal } = useModal();
+  const { closeModal } = useModal();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -45,6 +45,7 @@ export default function Modal() {
           priority: "",
           timeRelease: "",
         });
+        closeModal();
       } else {
         setError(validateResult.message);
       }
@@ -58,7 +59,7 @@ export default function Modal() {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="p-5 bg-white border rounded-3xl">
-        <Button className="cursor-pointer" onClick={() => setOpenModal(false)}>
+        <Button className="cursor-pointer" onClick={closeModal}>
           <X className="w-5 h-5" />
         </Button>
         <form method="post" onSubmit={handleSubmit}>

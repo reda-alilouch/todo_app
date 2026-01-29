@@ -1,6 +1,8 @@
 "use client";
-import { SigninData, SignupData } from "@/types";
+import { fetchProfile } from "@/lib/user";
+import { SigninData, SignupData, User } from "@/types";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 export const signin = async (data: SigninData) => {
   try {
@@ -49,4 +51,16 @@ export const signup = async (data: SignupData) => {
       message: "erreur serveur",
     };
   }
+};
+
+export const getProfile = () => {
+  const [userProfile, setUserProfile] = useState<User>();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetchProfile()
+      .then((data) => setUserProfile(data))
+      .finally(() => setLoading(false));
+  }, []);
+  return { userProfile, loading };
 };

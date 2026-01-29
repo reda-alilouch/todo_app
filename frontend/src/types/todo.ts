@@ -1,8 +1,9 @@
 export type Todo = {
-  _id: string;
+  _id?: string;
   name: string;
+  slug?: string;
   description: string;
-  completed: boolean;
+  completed?: boolean;
   priority: string;
   timeRelease: number | "";
 };
